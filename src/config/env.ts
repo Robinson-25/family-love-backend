@@ -14,6 +14,8 @@ const envSchema = z.object({
     .string()
     .default("false")
     .transform((v) => v === "true"),
+  // Conexiones simultáneas a MySQL por cada backend que esté corriendo.
+  DB_POOL_LIMIT: z.coerce.number().int().min(1).max(20).default(3),
 
   JWT_SECRET: z.string().min(16, "JWT_SECRET debe tener al menos 16 caracteres"),
   JWT_EXPIRES_IN: z.string().default("7d"),
