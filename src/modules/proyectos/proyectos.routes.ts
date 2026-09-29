@@ -5,6 +5,7 @@ import { db } from "../../config/db";
 import { requireStaff } from "../../middlewares/auth";
 import { validateBody } from "../../middlewares/validate";
 import { HttpError } from "../../utils/http-error";
+import { avisarCambio } from "../../utils/eventos";
 
 const router = Router();
 
@@ -101,6 +102,7 @@ router.post("/", requireStaff, validateBody(proyectoSchema), async (req, res) =>
       p.emoji || "💙",
     ]
   );
+  avisarCambio("proyectos"); // → el sitio público se actualiza solo
   res.status(201).json({ ok: true, id: result.insertId });
 });
 
@@ -125,6 +127,7 @@ router.put("/:id", requireStaff, validateBody(proyectoSchema), async (req, res) 
     ]
   );
   if (result.affectedRows === 0) throw new HttpError(404, "Proyecto no encontrado");
+  avisarCambio("proyectos");
   res.json({ ok: true });
 });
 
@@ -134,6 +137,7 @@ router.delete("/:id", requireStaff, async (req, res) => {
     req.params.id,
   ]);
   if (result.affectedRows === 0) throw new HttpError(404, "Proyecto no encontrado");
+  avisarCambio("proyectos");
   res.json({ ok: true });
 });
 

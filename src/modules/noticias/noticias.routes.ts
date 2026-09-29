@@ -5,6 +5,7 @@ import { db } from "../../config/db";
 import { requireStaff } from "../../middlewares/auth";
 import { validateBody } from "../../middlewares/validate";
 import { HttpError } from "../../utils/http-error";
+import { avisarCambio } from "../../utils/eventos";
 
 const router = Router();
 
@@ -55,6 +56,7 @@ router.post("/", requireStaff, validateBody(noticiaSchema), async (req, res) => 
     "INSERT INTO noticia (titulo, resumen, contenido, imagen, video, fecha) VALUES (?, ?, ?, ?, ?, ?)",
     [titulo, resumen, contenido, imagen, video || null, fecha]
   );
+  avisarCambio("noticias"); // → el sitio público se actualiza solo
   res.status(201).json({ ok: true, id: result.insertId });
 });
 
@@ -66,6 +68,7 @@ router.put("/:id", requireStaff, validateBody(noticiaSchema), async (req, res) =
     [titulo, resumen, contenido, imagen, video || null, fecha, req.params.id]
   );
   if (result.affectedRows === 0) throw new HttpError(404, "Noticia no encontrada");
+  avisarCambio("noticias");
   res.json({ ok: true });
 });
 
@@ -75,6 +78,7 @@ router.delete("/:id", requireStaff, async (req, res) => {
     req.params.id,
   ]);
   if (result.affectedRows === 0) throw new HttpError(404, "Noticia no encontrada");
+  avisarCambio("noticias");
   res.json({ ok: true });
 });
 
