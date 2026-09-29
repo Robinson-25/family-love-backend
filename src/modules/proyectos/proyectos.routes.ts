@@ -8,6 +8,22 @@ import { HttpError } from "../../utils/http-error";
 
 const router = Router();
 
+// Una imagen o video puede ser un enlace (https://...) o una ruta del sitio (/images/...)
+const esMedia = (v: string) => /^https?:\/\//i.test(v) || v.startsWith("/");
+const mediaRequerida = (campo: string) =>
+  z
+    .string()
+    .trim()
+    .min(1, `${campo} es obligatoria`)
+    .max(500)
+    .refine(esMedia, `${campo} debe ser un enlace (https://...) o una ruta (/images/...)`);
+const mediaOpcional = z
+  .string()
+  .trim()
+  .max(500)
+  .refine((v) => v === "" || esMedia(v), "El video debe ser un enlace (https://...) o una ruta (/videos/...)")
+  .nullish();
+
 const COLORES = [
   "from-orange-400 to-rose-500",
   "from-pink-400 to-purple-500",
@@ -25,9 +41,9 @@ const proyectoSchema = z.object({
   anio: z.coerce.number().int().min(2000, "Año inválido").max(2100, "Año inválido"),
   resumen: z.string().trim().min(1, "El resumen es obligatorio"),
   descripcion: z.string().trim().min(1, "La descripción es obligatoria"),
-  imagen: z.string().url("La imagen debe ser una URL"),
-  fotos: z.array(z.string().url()).optional(),
-  video: z.string().url().nullish().or(z.literal("")),
+  imagen: mediaRequerida("La imagen principal"),
+  fotos: z.array(mediaRequerida("Cada foto")).optional(),
+  video: mediaOpcional,
   etiqueta: z.string().trim().min(1, "La etiqueta es obligatoria").max(100),
   emoji: z.string().max(10).optional(),
 });

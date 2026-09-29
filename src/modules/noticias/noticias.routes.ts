@@ -8,12 +8,28 @@ import { HttpError } from "../../utils/http-error";
 
 const router = Router();
 
+// Una imagen o video puede ser un enlace (https://...) o una ruta del sitio (/images/...)
+const esMedia = (v: string) => /^https?:\/\//i.test(v) || v.startsWith("/");
+const mediaRequerida = (campo: string) =>
+  z
+    .string()
+    .trim()
+    .min(1, `${campo} es obligatoria`)
+    .max(500)
+    .refine(esMedia, `${campo} debe ser un enlace (https://...) o una ruta (/images/...)`);
+const mediaOpcional = z
+  .string()
+  .trim()
+  .max(500)
+  .refine((v) => v === "" || esMedia(v), "El video debe ser un enlace (https://...) o una ruta (/videos/...)")
+  .nullish();
+
 const noticiaSchema = z.object({
   titulo: z.string().trim().min(1, "El título es obligatorio").max(255),
   resumen: z.string().trim().min(1, "El resumen es obligatorio"),
   contenido: z.string().trim().min(1, "El contenido es obligatorio"),
-  imagen: z.string().url("La imagen debe ser una URL"),
-  video: z.string().url().nullish().or(z.literal("")),
+  imagen: mediaRequerida("La imagen"),
+  video: mediaOpcional,
   fecha: z.string().trim().min(1, "La fecha es obligatoria").max(50),
 });
 
