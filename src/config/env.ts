@@ -29,6 +29,10 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().default(""),
   CLOUDINARY_API_KEY: z.string().default(""),
   CLOUDINARY_API_SECRET: z.string().default(""),
+
+  // Asistente con IA (opcional). Sin clave, el asistente usa respuestas automáticas.
+  ANTHROPIC_API_KEY: z.string().default(""),
+  ASISTENTE_MODELO: z.string().default("claude-haiku-4-5-20251001"),
 });
 
 const parsed = envSchema.safeParse(process.env);
