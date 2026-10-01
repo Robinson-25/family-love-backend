@@ -35,6 +35,14 @@ router.post("/", requireStaff, upload.single("file"), async (req, res) => {
       (error, res) => (error || !res ? reject(error) : resolve(res))
     );
     stream.end(file.buffer);
+  }).catch((error: { message?: string; http_code?: number }) => {
+    // Mensaje claro en vez de un error 500 genérico
+    console.error("[uploads] Cloudinary rechazó el archivo:", error?.message);
+    if (/file size too large/i.test(error?.message ?? "")) {
+      const mb = (file.size / (1024 * 1024)).toFixed(1);
+      throw new HttpError(400, `El archivo pesa ${mb} MB y supera el máximo permitido. Usa uno más liviano.`);
+    }
+    throw new HttpError(502, "No se pudo subir el archivo. Intenta de nuevo en un momento.");
   });
 
   res.status(201).json({ url: result.secure_url, public_id: result.public_id });
