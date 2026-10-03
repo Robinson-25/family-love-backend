@@ -11,6 +11,7 @@ import { db } from "../../config/db";
 import { env } from "../../config/env";
 import { validateBody } from "../../middlewares/validate";
 import { escucharCambios } from "../../utils/eventos";
+import { asegurarTablaEquipo } from "../equipo/equipo.routes";
 import { CONOCIMIENTO_FIJO, INSTRUCCIONES } from "./conocimiento";
 
 const router = Router();
@@ -53,7 +54,13 @@ async function conocimientoDinamico() {
     );
     const p = proyectos.map((x) => `- ${x.titulo} (${x.fecha || x.anio}): ${x.resumen ?? ""}`).join("\n");
     const n = noticias.map((x) => `- ${x.titulo} (${x.fecha}) → /noticias/${x.id}: ${x.resumen ?? ""}`).join("\n");
-    const texto = `## Proyectos realizados (página /proyecto)\n${p || "- (sin proyectos publicados)"}\n\n## Noticias recientes\n${n || "- (sin noticias publicadas)"}`;
+    // Equipo directivo actual (se administra desde el panel)
+    await asegurarTablaEquipo();
+    const [equipo] = await db.execute<RowDataPacket[]>(
+      "SELECT nombre, cargo FROM equipo ORDER BY orden ASC, id ASC"
+    );
+    const e = equipo.map((x) => `${x.nombre} (${x.cargo})`).join(", ");
+    const texto = `## Equipo directivo (página /quienes-somos#equipo)\n${e || "(sin personas registradas)"}\n\n## Proyectos realizados (página /proyecto)\n${p || "- (sin proyectos publicados)"}\n\n## Noticias recientes\n${n || "- (sin noticias publicadas)"}`;
     cache = { texto, hasta: Date.now() + 5 * 60 * 1000 };
     return texto;
   } catch (e) {

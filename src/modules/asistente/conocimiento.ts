@@ -1,7 +1,7 @@
 // ─── LO QUE EL ASISTENTE SABE DE FAMILY LOVE ────────────────────────────────
 // Texto fijo con la información de la página. Si algo cambia (equipo,
-// requisitos, contacto…), actualízalo aquí. Los proyectos y noticias se
-// leen solos de la base de datos (ver asistente.routes.ts).
+// requisitos, contacto…), actualízalo aquí. Los proyectos, las noticias y el
+// equipo directivo se leen solos de la base de datos (ver asistente.routes.ts).
 
 export const CONOCIMIENTO_FIJO = `
 # Family Love (organización sin fines de lucro, Perú, región Junín)
@@ -26,9 +26,6 @@ export const CONOCIMIENTO_FIJO = `
 ## Programas
 - Elo Clown: intervenciones de clown hospitalario y comunitario que promueven alegría, empatía y bienestar emocional.
 - Metodología: enfoque basado en valores, medición de impacto social y participación activa juvenil.
-
-## Equipo directivo
-Tania Trinidad (Directora General – Fundadora), Darlyne Oviedo (Secretaría General), María A. Campos (Directora de Relaciones Internacionales), Jhan Toro (Director Académico), Ibeth Fernandez (Sub Directora Académica), Sheyla Aliaga (Coordinadora Académica de Derecho), Nayruth Paucar (Coordinadora Académica de Ingeniería y Tecnología), Cristhel Gonzales (Co-coordinadora Escolar), Brayhan Lazo (Co-coordinador Escolar), Marely Rodriguez (Directora de Acción Comunitaria), Evans Malpartida (Sub Director de Acción Comunitaria), Abigail Crispin (Coordinadora de Voluntariado), Mafer Mayta (Directora de Salud y Bienestar), Xiomara Villena (Sub Directora de Salud y Bienestar), Esaú Sedano (Director de Comunicaciones y RR. SS.), Robinson W. Biktu (Subdirector de Diseño y Desarrollo Digital).
 
 ## Voluntariado
 - Requisitos: tener entre 16 y 35 años; compromiso mínimo de 3 horas semanales; actitud positiva, responsabilidad y trabajo en equipo; portar el polo institucional; no se requiere experiencia previa.

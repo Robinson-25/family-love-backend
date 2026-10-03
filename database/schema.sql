@@ -79,3 +79,15 @@ CREATE TABLE IF NOT EXISTS `noticia` (
   `updatedAt` datetime(3) NOT NULL DEFAULT current_timestamp(3) ON UPDATE current_timestamp(3),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Equipo directivo (Quiénes Somos). El backend crea esta tabla solo la primera
+-- vez y carga las personas iniciales; aquí queda como referencia.
+CREATE TABLE IF NOT EXISTS `equipo` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nombre` VARCHAR(120) NOT NULL,
+  `cargo` VARCHAR(160) NOT NULL,
+  `imagen` VARCHAR(500) NOT NULL,
+  `bio` TEXT NOT NULL,
+  `orden` INT NOT NULL DEFAULT 0,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

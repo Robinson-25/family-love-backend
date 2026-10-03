@@ -14,6 +14,7 @@ import uploadsRoutes from "./modules/uploads/uploads.routes";
 import statsRoutes from "./modules/stats/stats.routes";
 import eventosRoutes from "./modules/eventos/eventos.routes";
 import asistenteRoutes from "./modules/asistente/asistente.routes";
+import equipoRoutes from "./modules/equipo/equipo.routes";
 
 export function createApp() {
   const app = express();
@@ -45,6 +46,7 @@ export function createApp() {
   api.use("/stats", statsRoutes);
   api.use("/eventos", eventosRoutes);
   api.use("/asistente", asistenteRoutes);
+  api.use("/equipo", equipoRoutes);
   api.use("/", contactoRoutes); // /contacto y /newsletter
   app.use("/api/v1", api);
 

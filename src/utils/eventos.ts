@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 
 // "Megáfono" interno del backend: cuando algo cambia, se avisa aquí
 // y todos los navegadores conectados a /api/v1/eventos reciben el aviso.
-export type Tema = "proyectos" | "noticias";
+export type Tema = "proyectos" | "noticias" | "equipo";
 
 const bus = new EventEmitter();
 bus.setMaxListeners(0); // sin límite de visitantes conectados
